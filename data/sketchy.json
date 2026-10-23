@@ -1,0 +1,101 @@
+[
+ {
+  "by": "tesla",
+  "c": "Self-driving",
+  "said": "2016-10-19",
+  "where": "Tesla blog post",
+  "claim": "\"All Tesla cars being produced now have full self-driving hardware.\"",
+  "why": "Tesla later swapped that computer for a newer one, and in January 2025 Musk said cars on the next generation (HW3) will also need an upgrade for unsupervised driving.",
+  "q": "\"All Tesla Cars Being Produced Now Have Full Self-Driving Hardware\" HW3 upgrade 2025"
+ },
+ {
+  "by": "tesla",
+  "c": "Self-driving",
+  "said": "2016-10-20",
+  "where": "Tesla promo video",
+  "claim": "\"The person in the driver's seat is only there for legal reasons. He is not doing anything.\"",
+  "why": "In a 2022 deposition, Tesla's Autopilot software director said the route was pre-mapped and the video did not show what the system could do on its own.",
+  "q": "Tesla 2016 self-driving video staged deposition Elluswamy"
+ },
+ {
+  "by": "tesla",
+  "c": "Self-driving",
+  "said": "2016-10-19",
+  "where": "Tesla order page",
+  "claim": "Sold an option called \"Full Self-Driving Capability\".",
+  "why": "Years later the same product was renamed \"Full Self-Driving (Supervised)\", and California's DMV accused Tesla in 2022 of false advertising over the Autopilot and FSD names.",
+  "q": "California DMV Tesla false advertising Autopilot Full Self-Driving"
+ },
+ {
+  "by": "tesla",
+  "c": "Safety",
+  "said": "2018-10-04",
+  "where": "Tesla Vehicle Safety Report",
+  "claim": "Quarterly reports showing far fewer crashes per mile with Autopilot on.",
+  "why": "Critics point out it compares mostly highway Autopilot miles with all US driving, which isn't like for like.",
+  "q": "Tesla vehicle safety report Autopilot comparison criticism highway miles"
+ },
+ {
+  "by": "tesla",
+  "c": "Robotaxi",
+  "said": "2016-07-20",
+  "where": "Master Plan, Part Deux (Tesla blog)",
+  "claim": "Owners will be able to add their car to a Tesla shared fleet and earn money while it drives others.",
+  "why": "As far as we could find, no owner's car has joined a Tesla ride network that pays them.",
+  "q": "Master Plan Part Deux shared fleet owners earn money"
+ },
+ {
+  "by": "musk",
+  "c": "Robotaxi",
+  "said": "2019-04-22",
+  "where": "Tesla Autonomy Day",
+  "claim": "Buying a car that isn't a Tesla is like buying a horse; your Tesla will be an appreciating asset worth well over $100,000 as a robotaxi.",
+  "why": "Used Tesla prices have fallen, as with other cars, and we found no case of owners earning robotaxi income.",
+  "q": "Musk Autonomy Day 2019 appreciating asset horse robotaxi"
+ },
+ {
+  "by": "tesla",
+  "c": "Vehicles",
+  "said": "2019-11-21",
+  "where": "Cybertruck unveiling",
+  "claim": "Cybertruck with \"armor glass\" windows.",
+  "why": "Both windows cracked on stage when a metal ball was thrown at them.",
+  "q": "Cybertruck unveiling armor glass shattered"
+ },
+ {
+  "by": "tesla",
+  "c": "Vehicles",
+  "said": "2019-11-21",
+  "where": "Cybertruck unveiling",
+  "claim": "Tri-motor Cybertruck with 500+ miles of range.",
+  "why": "The top Cybertruck launched in 2023 with an estimated 320 miles.",
+  "q": "Cybertruck 500 mile range promise 320 miles launch"
+ },
+ {
+  "by": "musk",
+  "c": "Vehicles",
+  "said": "2018-06-09",
+  "where": "Tweet",
+  "claim": "A \"SpaceX option package\" for the Roadster with rocket thrusters that let it hover.",
+  "why": "The car it attaches to hasn't shipped.",
+  "q": "Musk Roadster SpaceX package thrusters"
+ },
+ {
+  "by": "tesla",
+  "c": "Robots",
+  "said": "2024-10-10",
+  "where": "\"We, Robot\" event",
+  "claim": "Optimus robots mingling with guests, serving drinks and chatting.",
+  "why": "Reports afterwards said people were operating the robots remotely; that wasn't made clear on stage.",
+  "q": "We Robot Optimus remotely operated teleoperated report"
+ },
+ {
+  "by": "musk",
+  "c": "Vehicles",
+  "said": "2017-11-16",
+  "where": "Semi and Roadster unveiling",
+  "claim": "Tesla Semi will be cheaper per mile than rail freight.",
+  "why": "Only small fleets were running by 2026, and we couldn't find published data backing the rail comparison.",
+  "q": "Musk Tesla Semi cheaper than rail 2017"
+ }
+]

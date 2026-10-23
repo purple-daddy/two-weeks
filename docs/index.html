@@ -1,0 +1,753 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>2 weeks</title>
+<meta name="description" content="Dated promises from Elon Musk, the deadline he gave, and what actually happened. The counters keep running.">
+<meta name="color-scheme" content="light dark">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Iw3ezUmGEZ+dlL1RnRndiTIoHzxhHclWCXhLz3OzBH0='; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src data:; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23d1281f'/%3E%3Ctext x='32' y='46' font-size='38' font-family='Arial' font-weight='900' text-anchor='middle' fill='white'%3E2w%3C/text%3E%3C/svg%3E">
+<style>html{scroll-padding-top:env(safe-area-inset-top,0px)}[hidden]{display:none!important}img{max-width:100%}</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400;62..125,700;62..125,900&family=IBM+Plex+Mono:wght@400;600&family=Fraunces:opsz,wght@9..144,400;9..144,800&family=VT323&family=Press+Start+2P&family=Courier+Prime:wght@400;700&family=Oswald:wght@400;700&display=swap">
+<style>
+/* Layout: a running ledger of promises; each entry = when it was said, what the deadline was, how overdue it is now.
+   A look picker re-skins the whole page (palette + type + layout) from one data set. */
+:root {
+  --bg: #f3f2ee; --surface: #ffffff; --ink: #17181c; --muted: #6a6b73; --line: #dcdbd4;
+  --accent: #d1281f; --ok: #2f7d4f; --warn: #b7791f; --pend: #3b5bdb;
+  --display: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --body: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+  --dwidth: 125; --radius: 4px;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #111216; --surface: #1a1b21; --ink: #ecebe6; --muted: #9a9ba3; --line: #2c2d35;
+  --accent: #ff4a3d; --ok: #57c287; --warn: #e3a948; --pend: #7d97ff; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #111216; --surface: #1a1b21; --ink: #ecebe6; --muted: #9a9ba3; --line: #2c2d35;
+  --accent: #ff4a3d; --ok: #57c287; --warn: #e3a948; --pend: #7d97ff; color-scheme: dark }
+
+/* ---- the 15 looks: each only redefines tokens (+ a layout class on <main>) ---- */
+body.look-showroom { --bg:#fafafa; --surface:#fff; --ink:#111; --muted:#777; --line:#e6e6e6; --accent:#111; --display:"Archivo",sans-serif; --dwidth:62; --radius:12px; color-scheme:light }
+body.look-mars { --bg:#2a0f08; --surface:#3b160b; --ink:#ffd9c2; --muted:#d08a6a; --line:#5a2414; --accent:#ff6a2b; --ok:#ffd36a; --warn:#ffa04a; --pend:#ffc9a8; --display:"Oswald",sans-serif; color-scheme:dark }
+body.look-transcript { --bg:#f6f4ef; --surface:#f6f4ef; --ink:#222; --muted:#7a7468; --line:#d9d3c5; --accent:#9b2c2c; --display:"Courier Prime",monospace; --body:"Courier Prime",monospace; --radius:0; color-scheme:light }
+body.look-receipt { --bg:#e9e7e1; --surface:#fffdf8; --ink:#1b1b1b; --muted:#666; --line:#bdbdbd; --accent:#1b1b1b; --display:"IBM Plex Mono",monospace; --body:"IBM Plex Mono",monospace; --radius:0; color-scheme:light }
+body.look-tabloid { --bg:#fff200; --surface:#ffffff; --ink:#000; --muted:#333; --line:#000; --accent:#e10600; --display:"Archivo",sans-serif; --dwidth:62; --radius:0; color-scheme:light }
+body.look-terminal { --bg:#050805; --surface:#050805; --ink:#5dff7a; --muted:#2fae47; --line:#174a20; --accent:#b6ff5d; --ok:#5dff7a; --warn:#e6ff5d; --pend:#5de6ff; --display:"VT323",monospace; --body:"VT323",monospace; --mono:"VT323",monospace; --radius:0; color-scheme:dark }
+body.look-blueprint { --bg:#0d3b78; --surface:#0f458c; --ink:#e8f1ff; --muted:#9fc0ef; --line:#3f73bd; --accent:#ffffff; --ok:#b8ffd6; --warn:#ffe39a; --pend:#cfe2ff; --display:"IBM Plex Mono",monospace; --radius:0; color-scheme:dark }
+body.look-scoreboard { --bg:#0b0b0b; --surface:#141414; --ink:#ffb000; --muted:#a87400; --line:#2a2a2a; --accent:#ff3b30; --ok:#33ff66; --warn:#ffd60a; --pend:#64d2ff; --display:"VT323",monospace; --mono:"VT323",monospace; --radius:2px; color-scheme:dark }
+body.look-ledger { --bg:#eef3e8; --surface:#f8fbf3; --ink:#1f2a1c; --muted:#5e6c58; --line:#b9cdb0; --accent:#a3271c; --display:"Fraunces",serif; --mono:"IBM Plex Mono",monospace; --radius:0; color-scheme:light }
+body.look-post { --bg:#e9edf2; --surface:#ffffff; --ink:#0f1419; --muted:#536471; --line:#e1e6ea; --accent:#0f1419; --display:"Archivo",sans-serif; --radius:16px; color-scheme:light }
+body.look-calendar { --bg:#fbfaf6; --surface:#fff; --ink:#222; --muted:#888; --line:#e8e4d8; --accent:#c0392b; --display:"Fraunces",serif; --radius:6px; color-scheme:light }
+body.look-placard { --bg:#1d1c1a; --surface:#f1ece2; --ink:#1d1c1a; --muted:#6f685c; --line:#cfc6b5; --accent:#8a6d3b; --display:"Fraunces",serif; --body:"Fraunces",serif; --radius:0; color-scheme:dark }
+body.look-arcade { --bg:#14002b; --surface:#22004a; --ink:#ffffff; --muted:#c79bff; --line:#5b1fa8; --accent:#ff2fd0; --ok:#3dff9a; --warn:#ffe14a; --pend:#4ad8ff; --display:"Press Start 2P",monospace; --body:"VT323",monospace; --mono:"VT323",monospace; --radius:0; color-scheme:dark }
+body.look-print { --bg:#ffffff; --surface:#ffffff; --ink:#000; --muted:#555; --line:#000; --accent:#000; --ok:#000; --warn:#000; --pend:#000; --display:"IBM Plex Mono",monospace; --body:"IBM Plex Mono",monospace; --radius:0; color-scheme:light }
+
+* { box-sizing: border-box }
+body { background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 16px; line-height: 1.5;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-top: max(24px, env(safe-area-inset-top, 0px)); padding-bottom: max(64px, env(safe-area-inset-bottom, 0px)); transition: background .25s, color .25s }
+@media (prefers-reduced-motion: reduce) { body { transition: none } }
+.wrap { max-width: 1080px; margin: 0 auto; display: grid; gap: 28px }
+.wrap > *, .controls > * { min-width: 0 }   /* grid items default to min-content width: the nowrap Looks strip made the whole page 1450px wide on a phone */
+.row { min-width: 0 }
+a { color: inherit }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px }
+
+/* header */
+header { display: grid; gap: 14px }
+.brand { font-family: var(--display); font-weight: 900; font-stretch: calc(var(--dwidth) * 1%); font-variation-settings: "wdth" var(--dwidth);
+  font-size: clamp(64px, 16vw, 168px); line-height: .85; letter-spacing: -.03em; margin: 0; text-wrap: balance }
+.brand em { font-style: normal; color: var(--accent) }
+.lede { max-width: 62ch; color: var(--muted); margin: 0; font-size: 17px }
+.stats { display: flex; flex-wrap: wrap; gap: 12px 28px; font-family: var(--mono); font-variant-numeric: tabular-nums }
+.stat b { display: block; font-size: clamp(26px, 5vw, 40px); font-family: var(--display); line-height: 1; color: var(--ink) }
+.stat span { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted) }
+.stat.big b { color: var(--accent) }
+
+/* controls */
+.controls { display: grid; gap: 12px; border-block: 1px solid var(--line); padding-block: 14px; position: sticky; top: env(safe-area-inset-top, 0px); background: var(--bg); z-index: 5 }
+.row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center }
+.row > label { font-family: var(--mono); font-size: 12px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); min-width: 64px }
+.chip { font: inherit; font-size: 14px; border: 1px solid var(--line); background: var(--surface); color: var(--ink);
+  padding: 5px 11px; border-radius: 999px; cursor: pointer }
+.chip[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink) }
+select { font: inherit; font-size: 14px; padding: 5px 8px; background: var(--surface); color: var(--ink); border: 1px solid var(--line); border-radius: 6px }
+.looks { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 2px; scrollbar-width: thin }
+.look { flex: 0 0 auto; font: inherit; font-size: 13px; cursor: pointer; border: 1px solid var(--line); background: var(--surface); color: var(--ink); padding: 6px 10px; border-radius: 6px; display: flex; gap: 6px; align-items: center }
+.look i { width: 14px; height: 14px; border-radius: 3px; display: inline-block; border: 1px solid rgba(127,127,127,.4) }
+.look[aria-pressed="true"] { outline: 2px solid var(--accent); outline-offset: 1px }
+
+/* status pills */
+.pill { font-family: var(--mono); font-size: 11px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; padding: 2px 8px; border-radius: 999px; border: 1px solid currentColor; white-space: nowrap }
+.s-missed { color: var(--accent) } .s-late { color: var(--warn) } .s-pending { color: var(--pend) } .s-contested { color: var(--muted) }
+.overdue { font-family: var(--mono); font-variant-numeric: tabular-nums; font-weight: 600 }
+.cat { font-family: var(--mono); font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .08em }
+.src { font-family: var(--mono); font-size: 12px; color: var(--muted) }
+
+/* ---- layouts ---- */
+main { display: grid; gap: 0 }
+/* timeline (default) */
+.l-timeline .item { display: grid; grid-template-columns: 112px minmax(0,1fr) auto; gap: 6px 18px; padding-block: 18px; border-top: 1px solid var(--line) }
+.l-timeline .when { font-family: var(--mono); font-size: 13px; color: var(--muted); padding-top: 4px }
+.l-timeline .claim { font-family: var(--display); font-weight: 700; font-size: 21px; line-height: 1.25; margin: 0; text-wrap: balance }
+.l-timeline .meta { grid-column: 2; display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center }
+.l-timeline .right { text-align: right; display: grid; gap: 6px; justify-items: end; align-content: start }
+.l-timeline .note { grid-column: 2; color: var(--muted); margin: 0; max-width: 70ch }
+@media (max-width: 640px) { .l-timeline .item { grid-template-columns: minmax(0,1fr) } .l-timeline .meta, .l-timeline .note { grid-column: 1 } .l-timeline .right { justify-items: start; text-align: left; display: flex; gap: 10px } }
+/* cards */
+.l-cards { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px }
+.l-cards .item { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px; display: grid; gap: 10px; align-content: start }
+.l-cards .claim { font-family: var(--display); font-weight: 700; font-size: 18px; line-height: 1.3; margin: 0 }
+.l-cards .right { display: flex; justify-content: space-between; align-items: center; gap: 8px; order: -1 }
+.l-cards .when { font-family: var(--mono); font-size: 12px; color: var(--muted) }
+.l-cards .meta { display: flex; flex-wrap: wrap; gap: 6px 12px; align-items: center }
+.l-cards .note { color: var(--muted); margin: 0; font-size: 14px }
+.l-cards .overdue { font-size: 22px; font-family: var(--display) }
+/* table / ledger */
+.l-table { overflow-x: auto }
+.l-table table { border-collapse: collapse; width: 100%; min-width: 760px; font-size: 14px }
+.l-table th { font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); text-align: left; padding: 8px 10px; border-bottom: 2px solid var(--ink) }
+.l-table td { padding: 10px; border-bottom: 1px solid var(--line); vertical-align: top }
+.l-table td.num { text-align: right; font-family: var(--mono); font-variant-numeric: tabular-nums; white-space: nowrap }
+.l-table .claim { font-weight: 700 }
+/* receipt */
+.l-receipt { max-width: 460px; margin: 0 auto; width: 100%; background: var(--surface); padding: 22px 20px 30px; font-family: var(--mono); font-size: 13px;
+  -webkit-mask: radial-gradient(circle at 8px 100%, transparent 6px, #000 6.5px) 0 100%/16px 100% repeat-x; mask: none; box-shadow: 0 1px 0 var(--line) }
+.l-receipt .rhead { text-align: center; border-bottom: 1px dashed var(--ink); padding-bottom: 10px; margin-bottom: 6px }
+.l-receipt .item { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 2px 10px; padding-block: 8px; border-bottom: 1px dashed var(--line) }
+.l-receipt .claim { margin: 0; font-weight: 600; font-size: 13px }
+.l-receipt .when, .l-receipt .note, .l-receipt .meta { grid-column: 1 / -1; color: var(--muted); font-size: 12px; margin: 0 }
+.l-receipt .right { grid-row: 1; grid-column: 2; text-align: right }
+.l-receipt .pill { display: none }
+.l-receipt .rtotal { display: flex; justify-content: space-between; border-top: 2px solid var(--ink); margin-top: 10px; padding-top: 8px; font-weight: 600; font-size: 15px }
+/* calendar: grouped by deadline year */
+.l-calendar { gap: 22px }
+.l-calendar .year { display: grid; grid-template-columns: 96px minmax(0,1fr); gap: 14px; border-top: 1px solid var(--line); padding-top: 12px }
+.l-calendar .yr { font-family: var(--display); font-size: 40px; font-weight: 800; line-height: 1; color: var(--accent) }
+.l-calendar .cells { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px,1fr)); gap: 10px }
+.l-calendar .item { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 12px; display: grid; gap: 6px }
+.l-calendar .claim { margin: 0; font-weight: 700; font-family: var(--display); font-size: 16px; line-height: 1.3 }
+.l-calendar .when, .l-calendar .note { color: var(--muted); font-size: 13px; margin: 0 }
+.l-calendar .meta, .l-calendar .right { display: flex; flex-wrap: wrap; gap: 8px; align-items: center }
+@media (max-width: 560px) { .l-calendar .year { grid-template-columns: minmax(0,1fr) } }
+
+/* look-specific flourishes */
+body.look-tabloid .brand { text-transform: uppercase; background: var(--accent); color: #fff; display: inline-block; padding: 0 .08em; transform: rotate(-1.5deg) }
+body.look-tabloid .brand em { color: #ff0 }
+body.look-terminal .brand::after { content: "_"; animation: blink 1s steps(1) infinite } @keyframes blink { 50% { opacity: 0 } }
+@media (prefers-reduced-motion: reduce) { body.look-terminal .brand::after { animation: none } }
+body.look-blueprint { background-image: linear-gradient(rgba(255,255,255,.07) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.07) 1px, transparent 1px); background-size: 24px 24px }
+body.look-scoreboard .overdue { color: var(--accent); text-shadow: 0 0 8px currentColor; font-size: 26px }
+body.look-mars .brand { text-transform: uppercase; letter-spacing: .02em }
+body.look-placard .l-cards .item { box-shadow: 0 10px 30px rgba(0,0,0,.45) }
+body.look-placard .lede, body.look-placard .stat span, body.look-placard .row > label, body.look-placard .src { color: #b8ad98 }
+body.look-placard header, body.look-placard .stat b { color: #f1ece2 }
+body.look-placard .controls { background: var(--bg) }
+body.look-placard .tab[aria-selected="true"] { color: #f1ece2 }
+body.look-placard .tab, body.look-placard .empty, body.look-placard footer { color: #b8ad98 }
+body.look-placard .chip[aria-pressed="true"] { background: #f1ece2; color: #1d1c1a; border-color: #f1ece2 }
+@media (max-width: 640px) { .controls { position: static } }   /* three rows + the looks strip is too tall to pin on a phone */
+body.look-post .l-cards .item::before { content: "Claim on record"; font-family: var(--mono); font-size: 12px; color: var(--muted) }
+body.look-arcade .brand { font-size: clamp(36px, 9vw, 84px); line-height: 1.1; color: var(--accent); text-shadow: 4px 4px 0 #00e5ff }
+body.look-arcade .claim { font-family: var(--body); font-size: 22px; font-weight: 400 }
+body.look-print .pill { border-style: dashed }
+body.look-showroom .claim { font-weight: 400 }
+
+.tabs { display: flex; gap: 0; border-bottom: 2px solid var(--ink) }
+.tab { font: inherit; font-family: var(--display); font-weight: 700; font-size: 18px; background: transparent; color: var(--muted); border: 0; padding: 8px 16px 10px; cursor: pointer; border-bottom: 4px solid transparent; margin-bottom: -2px }
+.tab[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--accent) }
+.s-musk { color: var(--accent) } .s-tesla { color: var(--pend) }
+.why { margin: 0; max-width: 70ch } .why b { font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-right: 6px }
+.l-cards .why, .l-calendar .why { font-size: 14px }
+.l-receipt .why { grid-column: 1 / -1; font-size: 12px; color: var(--muted) }
+footer { color: var(--muted); font-size: 13px; max-width: 72ch; display: grid; gap: 8px }
+.empty { padding: 40px 0; color: var(--muted); font-family: var(--mono) }
+</style>
+
+</head><body>
+<noscript><p style="padding:24px;font:16px sans-serif">2 weeks needs JavaScript to show its counters.</p></noscript>
+<div class="wrap">
+  <header>
+    <h1 class="brand">2&nbsp;<em>weeks</em></h1>
+    <p class="lede" id="lede">Every dated promise we could pin down from Elon Musk, with the deadline he gave and what actually happened. The counter keeps running until the promise ships.</p>
+    <div class="stats" id="stats"></div>
+  </header>
+
+  <nav class="tabs" role="tablist" aria-label="Sections">
+    <button class="tab" role="tab" id="tab-promises" data-tab="promises">Broken promises</button>
+    <button class="tab" role="tab" id="tab-sketchy" data-tab="sketchy">Sketchy</button>
+  </nav>
+
+  <section class="controls" aria-label="Filters and looks">
+    <div class="row" role="group" aria-label="Topic"><label>Topic</label><span id="cats" class="row"></span></div>
+    <div class="row" role="group" aria-label="Status"><label id="flabel">Status</label><span id="stats-f" class="row"></span>
+      <label for="sort" style="min-width:auto;margin-left:auto">Sort</label>
+      <select id="sort">
+        <option value="overdue">Most overdue</option>
+        <option value="said">Date said (oldest)</option>
+        <option value="saidnew">Date said (newest)</option>
+        <option value="deadline">Deadline</option>
+      </select>
+    </div>
+    <div class="row"><label>Look</label><div class="looks" id="looks" role="group" aria-label="Look"></div></div>
+  </section>
+
+  <main id="list" class="l-timeline"></main>
+
+  <footer>
+    <p>Claims are paraphrased from public remarks, with the date and venue where they were made. A deadline of "this year" or "next year" is counted from the last day of that year. "Late" means it shipped after the deadline; days overdue stop counting on the day it arrived. Status is as of the day you're reading this page. Each entry links to a search for its coverage so you can check the wording yourself.</p>
+    <p>To add a post from Tesla, Tesla AI or Tesla North America, send the link in the Coordinator chat and it gets added with its date.</p>
+    <p class="src" id="asof"></p>
+  </footer>
+</div>
+
+<script>
+const DATA = [
+ {
+  "c": "Self-driving",
+  "said": "2015-12-21",
+  "where": "Fortune interview",
+  "claim": "Full autonomy in roughly two years.",
+  "due": "2017-12-31",
+  "done": null,
+  "s": "missed",
+  "note": "Tesla still sells FSD as \"Supervised\": a driver must stay responsible.",
+  "q": "Musk 2015 Fortune full autonomy two years"
+ },
+ {
+  "c": "Self-driving",
+  "said": "2016-01-10",
+  "where": "Tweet",
+  "claim": "Within about 2 years, Summon will bring your car to you from anywhere connected by land: car in New York, you in LA.",
+  "due": "2018-01-31",
+  "done": null,
+  "s": "missed",
+  "note": "Summon works in parking lots, at walking distance.",
+  "q": "Musk 2016 tweet summon anywhere connected by land"
+ },
+ {
+  "c": "Self-driving",
+  "said": "2016-10-19",
+  "where": "Autopilot hardware 2 call",
+  "claim": "A Tesla will drive itself from LA to New York with no touches by the end of 2017.",
+  "due": "2017-12-31",
+  "done": null,
+  "s": "missed",
+  "note": "The coast-to-coast demo never happened.",
+  "q": "Musk 2016 coast to coast autonomous drive end of 2017"
+ },
+ {
+  "c": "Self-driving",
+  "said": "2018-02-07",
+  "where": "Q4 2017 earnings call",
+  "claim": "The coast-to-coast drive is three to six months away.",
+  "due": "2018-08-31",
+  "done": null,
+  "s": "missed",
+  "note": "Second deadline for the same demo.",
+  "q": "Musk 2018 earnings call coast to coast three to six months"
+ },
+ {
+  "c": "Self-driving",
+  "said": "2019-02-19",
+  "where": "ARK Invest podcast",
+  "claim": "Self-driving \"feature complete\" this year; you could fall asleep in the car by the end of 2020.",
+  "due": "2020-12-31",
+  "done": null,
+  "s": "missed",
+  "note": "",
+  "q": "Musk ARK podcast 2019 feature complete sleep in car 2020"
+ },
+ {
+  "c": "Robotaxi",
+  "said": "2019-04-22",
+  "where": "Tesla Autonomy Day",
+  "claim": "Over a million Tesla robotaxis on the road next year.",
+  "due": "2020-12-31",
+  "done": null,
+  "s": "missed",
+  "note": "Owners' cars never joined a robotaxi network.",
+  "q": "Tesla Autonomy Day 2019 million robotaxis 2020"
+ },
+ {
+  "c": "Self-driving",
+  "said": "2020-07-09",
+  "where": "World AI Conference, Shanghai",
+  "claim": "Basic Level 5 autonomy will be complete this year.",
+  "due": "2020-12-31",
+  "done": null,
+  "s": "missed",
+  "note": "",
+  "q": "Musk WAIC 2020 level 5 basic functionality this year"
+ },
+ {
+  "c": "Self-driving",
+  "said": "2021-01-27",
+  "where": "Q4 2020 earnings call",
+  "claim": "Confident the car will drive itself more safely than a person this year.",
+  "due": "2021-12-31",
+  "done": null,
+  "s": "missed",
+  "note": "",
+  "q": "Musk January 2021 earnings call full self driving this year"
+ },
+ {
+  "c": "Self-driving",
+  "said": "2022-01-26",
+  "where": "Q4 2021 earnings call",
+  "claim": "Would be shocked if Full Self-Driving isn't safer than a human driver this year.",
+  "due": "2022-12-31",
+  "done": null,
+  "s": "missed",
+  "note": "",
+  "q": "Musk 2022 \"would be shocked\" full self driving this year"
+ },
+ {
+  "c": "Robotaxi",
+  "said": "2024-10-10",
+  "where": "\"We, Robot\" event",
+  "claim": "Unsupervised FSD for Model 3 and Model Y owners in California and Texas next year.",
+  "due": "2025-12-31",
+  "done": null,
+  "s": "missed",
+  "note": "Austin's robotaxi pilot began in June 2025 with a Tesla staffer on board; owners' cars stayed supervised.",
+  "q": "We Robot 2024 unsupervised FSD California Texas 2025"
+ },
+ {
+  "c": "Robotaxi",
+  "said": "2024-10-10",
+  "where": "\"We, Robot\" event",
+  "claim": "Cybercab in production before 2027.",
+  "due": "2026-12-31",
+  "done": null,
+  "s": "pending",
+  "note": "Deadline hasn't arrived yet.",
+  "q": "Cybercab production before 2027 Musk We Robot"
+ },
+ {
+  "c": "Robotaxi",
+  "said": "2025-07-23",
+  "where": "Q2 2025 earnings call",
+  "claim": "Robotaxi service available to about half the US population by the end of the year.",
+  "due": "2025-12-31",
+  "done": null,
+  "s": "missed",
+  "note": "",
+  "q": "Musk robotaxi half of US population end of 2025"
+ },
+ {
+  "c": "Vehicles",
+  "said": "2016-03-31",
+  "where": "Model 3 unveiling",
+  "claim": "Model 3 will start at $35,000.",
+  "due": "2017-12-31",
+  "done": "2019-02-28",
+  "s": "late",
+  "note": "Briefly offered in 2019, then moved off the menu.",
+  "q": "$35,000 Model 3 2019 off menu"
+ },
+ {
+  "c": "Vehicles",
+  "said": "2017-07-28",
+  "where": "Model 3 first handover",
+  "claim": "Model 3 production at 5,000 a week by December.",
+  "due": "2017-12-31",
+  "done": "2018-07-01",
+  "s": "late",
+  "note": "Hit the rate in the last week of June 2018.",
+  "q": "Model 3 5000 per week December 2017 promise"
+ },
+ {
+  "c": "Vehicles",
+  "said": "2017-11-16",
+  "where": "Semi and Roadster unveiling",
+  "claim": "Tesla Semi in production in 2019.",
+  "due": "2019-12-31",
+  "done": "2022-12-01",
+  "s": "late",
+  "note": "First trucks went to PepsiCo in December 2022, in small numbers.",
+  "q": "Tesla Semi production 2019 promise first deliveries 2022"
+ },
+ {
+  "c": "Vehicles",
+  "said": "2017-11-16",
+  "where": "Semi and Roadster unveiling",
+  "claim": "New Roadster deliveries in 2020.",
+  "due": "2020-12-31",
+  "done": null,
+  "s": "missed",
+  "note": "Reservation holders paid deposits in 2017.",
+  "q": "Tesla Roadster 2020 deliveries delayed"
+ },
+ {
+  "c": "Vehicles",
+  "said": "2024-02-28",
+  "where": "Tweet",
+  "claim": "Roadster demo by the end of this year, shipping next year.",
+  "due": "2024-12-31",
+  "done": null,
+  "s": "missed",
+  "note": "",
+  "q": "Musk 2024 Roadster demo end of year ship next year"
+ },
+ {
+  "c": "Vehicles",
+  "said": "2019-11-21",
+  "where": "Cybertruck unveiling",
+  "claim": "Cybertruck in production late 2021, starting at $39,900.",
+  "due": "2021-12-31",
+  "done": "2023-11-30",
+  "s": "late",
+  "note": "Deliveries began November 2023; the launch edition was $60,990.",
+  "q": "Cybertruck 2021 production $39,900 promise"
+ },
+ {
+  "c": "Vehicles",
+  "said": "2020-09-22",
+  "where": "Battery Day",
+  "claim": "A $25,000 Tesla in about three years.",
+  "due": "2023-09-30",
+  "done": null,
+  "s": "missed",
+  "note": "",
+  "q": "Battery Day 2020 $25,000 Tesla three years"
+ },
+ {
+  "c": "Robots",
+  "said": "2024-06-13",
+  "where": "Tesla shareholder meeting",
+  "claim": "Optimus humanoid robots doing useful work in Tesla factories next year, in the thousands.",
+  "due": "2025-12-31",
+  "done": null,
+  "s": "missed",
+  "note": "",
+  "q": "Musk Optimus thousands in factories 2025"
+ },
+ {
+  "c": "Space",
+  "said": "2016-09-27",
+  "where": "International Astronautical Congress",
+  "claim": "First crewed flight to Mars could launch in 2024.",
+  "due": "2024-12-31",
+  "done": null,
+  "s": "missed",
+  "note": "",
+  "q": "Musk IAC 2016 Mars crewed 2024"
+ },
+ {
+  "c": "Space",
+  "said": "2017-09-29",
+  "where": "International Astronautical Congress",
+  "claim": "Two cargo ships land on Mars in 2022.",
+  "due": "2022-12-31",
+  "done": null,
+  "s": "missed",
+  "note": "",
+  "q": "Musk IAC 2017 cargo Mars 2022"
+ },
+ {
+  "c": "Space",
+  "said": "2019-09-28",
+  "where": "Starship update, Boca Chica",
+  "claim": "Starship reaches orbit in under six months.",
+  "due": "2020-03-31",
+  "done": "2024-03-14",
+  "s": "late",
+  "note": "Counted from the third test flight, the first to reach its planned near-orbital path.",
+  "q": "Musk 2019 Starship orbit six months"
+ },
+ {
+  "c": "Other",
+  "said": "2019-10-25",
+  "where": "Solar Roof V3 launch",
+  "claim": "1,000 Solar Roofs a week by the end of the year.",
+  "due": "2019-12-31",
+  "done": null,
+  "s": "missed",
+  "note": "",
+  "q": "Musk Solar Roof 1000 per week end of 2019"
+ },
+ {
+  "c": "Other",
+  "said": "2019-07-16",
+  "where": "Neuralink presentation",
+  "claim": "First human implant by the end of next year.",
+  "due": "2020-12-31",
+  "done": "2024-01-28",
+  "s": "late",
+  "note": "",
+  "q": "Neuralink 2019 human trials end of 2020"
+ },
+ {
+  "c": "Other",
+  "said": "2020-03-19",
+  "where": "Tweet",
+  "claim": "Probably close to zero new US COVID cases by the end of April.",
+  "due": "2020-04-30",
+  "done": null,
+  "s": "missed",
+  "note": "",
+  "q": "Musk tweet March 2020 close to zero new cases end of April"
+ },
+ {
+  "c": "Other",
+  "said": "2018-08-07",
+  "where": "Tweet",
+  "claim": "Taking Tesla private at $420 a share. \"Funding secured.\"",
+  "due": "2018-08-24",
+  "done": null,
+  "s": "contested",
+  "note": "The SEC called it misleading; Musk and Tesla settled for $20M each. A 2023 jury found him not liable to shareholders.",
+  "q": "funding secured $420 SEC settlement 2023 jury verdict"
+ }
+];
+const SKETCHY = [
+ {
+  "by": "tesla",
+  "c": "Self-driving",
+  "said": "2016-10-19",
+  "where": "Tesla blog post",
+  "claim": "\"All Tesla cars being produced now have full self-driving hardware.\"",
+  "why": "Tesla later swapped that computer for a newer one, and in January 2025 Musk said cars on the next generation (HW3) will also need an upgrade for unsupervised driving.",
+  "q": "\"All Tesla Cars Being Produced Now Have Full Self-Driving Hardware\" HW3 upgrade 2025"
+ },
+ {
+  "by": "tesla",
+  "c": "Self-driving",
+  "said": "2016-10-20",
+  "where": "Tesla promo video",
+  "claim": "\"The person in the driver's seat is only there for legal reasons. He is not doing anything.\"",
+  "why": "In a 2022 deposition, Tesla's Autopilot software director said the route was pre-mapped and the video did not show what the system could do on its own.",
+  "q": "Tesla 2016 self-driving video staged deposition Elluswamy"
+ },
+ {
+  "by": "tesla",
+  "c": "Self-driving",
+  "said": "2016-10-19",
+  "where": "Tesla order page",
+  "claim": "Sold an option called \"Full Self-Driving Capability\".",
+  "why": "Years later the same product was renamed \"Full Self-Driving (Supervised)\", and California's DMV accused Tesla in 2022 of false advertising over the Autopilot and FSD names.",
+  "q": "California DMV Tesla false advertising Autopilot Full Self-Driving"
+ },
+ {
+  "by": "tesla",
+  "c": "Safety",
+  "said": "2018-10-04",
+  "where": "Tesla Vehicle Safety Report",
+  "claim": "Quarterly reports showing far fewer crashes per mile with Autopilot on.",
+  "why": "Critics point out it compares mostly highway Autopilot miles with all US driving, which isn't like for like.",
+  "q": "Tesla vehicle safety report Autopilot comparison criticism highway miles"
+ },
+ {
+  "by": "tesla",
+  "c": "Robotaxi",
+  "said": "2016-07-20",
+  "where": "Master Plan, Part Deux (Tesla blog)",
+  "claim": "Owners will be able to add their car to a Tesla shared fleet and earn money while it drives others.",
+  "why": "As far as we could find, no owner's car has joined a Tesla ride network that pays them.",
+  "q": "Master Plan Part Deux shared fleet owners earn money"
+ },
+ {
+  "by": "musk",
+  "c": "Robotaxi",
+  "said": "2019-04-22",
+  "where": "Tesla Autonomy Day",
+  "claim": "Buying a car that isn't a Tesla is like buying a horse; your Tesla will be an appreciating asset worth well over $100,000 as a robotaxi.",
+  "why": "Used Tesla prices have fallen, as with other cars, and we found no case of owners earning robotaxi income.",
+  "q": "Musk Autonomy Day 2019 appreciating asset horse robotaxi"
+ },
+ {
+  "by": "tesla",
+  "c": "Vehicles",
+  "said": "2019-11-21",
+  "where": "Cybertruck unveiling",
+  "claim": "Cybertruck with \"armor glass\" windows.",
+  "why": "Both windows cracked on stage when a metal ball was thrown at them.",
+  "q": "Cybertruck unveiling armor glass shattered"
+ },
+ {
+  "by": "tesla",
+  "c": "Vehicles",
+  "said": "2019-11-21",
+  "where": "Cybertruck unveiling",
+  "claim": "Tri-motor Cybertruck with 500+ miles of range.",
+  "why": "The top Cybertruck launched in 2023 with an estimated 320 miles.",
+  "q": "Cybertruck 500 mile range promise 320 miles launch"
+ },
+ {
+  "by": "musk",
+  "c": "Vehicles",
+  "said": "2018-06-09",
+  "where": "Tweet",
+  "claim": "A \"SpaceX option package\" for the Roadster with rocket thrusters that let it hover.",
+  "why": "The car it attaches to hasn't shipped.",
+  "q": "Musk Roadster SpaceX package thrusters"
+ },
+ {
+  "by": "tesla",
+  "c": "Robots",
+  "said": "2024-10-10",
+  "where": "\"We, Robot\" event",
+  "claim": "Optimus robots mingling with guests, serving drinks and chatting.",
+  "why": "Reports afterwards said people were operating the robots remotely; that wasn't made clear on stage.",
+  "q": "We Robot Optimus remotely operated teleoperated report"
+ },
+ {
+  "by": "musk",
+  "c": "Vehicles",
+  "said": "2017-11-16",
+  "where": "Semi and Roadster unveiling",
+  "claim": "Tesla Semi will be cheaper per mile than rail freight.",
+  "why": "Only small fleets were running by 2026, and we couldn't find published data backing the rail comparison.",
+  "q": "Musk Tesla Semi cheaper than rail 2017"
+ }
+];
+const BY = { musk: "Musk", tesla: "Tesla (official)" };
+const TODAY = new Date();
+const DAY = 864e5;
+const d = s => new Date(s + "T12:00:00");
+const fmt = s => d(s).toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" });
+// Whole calendar days (midnight to midnight, local), so the counts don't flip at noon or shift with DST.
+const dn = s => { const [y, m, dd] = s.split("-").map(Number); return Date.UTC(y, m - 1, dd) / DAY; };
+const todayN = Date.UTC(TODAY.getFullYear(), TODAY.getMonth(), TODAY.getDate()) / DAY;
+DATA.forEach(x => { if (x.s === "pending" && dn(x.due) < todayN) x.s = "missed"; });   // a pending promise whose date passed is missed
+function overdueDays(x) {
+  if (x.s === "pending") return todayN - dn(x.due);                       // negative = days left
+  return Math.max(0, (x.done ? dn(x.done) : todayN) - dn(x.due));
+}
+const dayWord = n => n === 1 ? "1 day" : n.toLocaleString() + " days";
+const sortOk = ["overdue", "said", "saidnew", "deadline"];
+const label = { missed: "Missed", late: "Late", pending: "Pending", contested: "Contested" };
+const LOOKS = [
+  ["countdown","Countdown","timeline","#d1281f"], ["showroom","Showroom","cards","#111111"], ["mars","Mars","cards","#ff6a2b"],
+  ["transcript","Transcript","timeline","#9b2c2c"], ["receipt","Receipt","receipt","#fffdf8"], ["tabloid","Tabloid","cards","#fff200"],
+  ["terminal","Terminal","timeline","#5dff7a"], ["blueprint","Blueprint","table","#0d3b78"], ["scoreboard","Scoreboard","cards","#ffb000"],
+  ["ledger","Ledger","table","#eef3e8"], ["post","Post","cards","#e9edf2"], ["calendar","Calendar","calendar","#c0392b"],
+  ["placard","Museum","cards","#8a6d3b"], ["arcade","Arcade","cards","#ff2fd0"], ["print","Plain print","table","#ffffff"]
+];
+const st = { tab: "promises", cat: "All", status: "All", src: "All", sort: "overdue", look: "countdown" };
+try { Object.assign(st, JSON.parse(localStorage.getItem("2weeks") || "{}")); } catch (e) {}
+if (!LOOKS.some(l => l[0] === st.look)) st.look = "countdown";          // never put stored text in a class name
+if (st.tab !== "promises" && st.tab !== "sketchy") st.tab = "promises";
+for (const k of ["cat", "status", "src", "sort"]) if (typeof st[k] !== "string") st[k] = k === "sort" ? "overdue" : "All";
+if (!sortOk.includes(st.sort)) st.sort = "overdue";
+const save = () => { try { localStorage.setItem("2weeks", JSON.stringify(st)); } catch (e) {} };
+const esc = s => String(s).replace(/[&<>"]/g, ch => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[ch]));
+const search = q => "https://www.google.com/search?q=" + encodeURIComponent(q);
+
+function chips(el, values, key) {
+  el.innerHTML = values.map(v => `<button class="chip" aria-pressed="${st[key] === v}" data-v="${esc(v)}">${esc(v === "All" ? "All" : (label[v] || v))}</button>`).join("");
+  el.onclick = e => { const b = e.target.closest(".chip"); if (!b) return; st[key] = b.dataset.v; save(); render(); };
+}
+function looks() {
+  const el = document.getElementById("looks");
+  el.innerHTML = LOOKS.map(([id, name, , sw]) => `<button class="look" aria-pressed="${st.look === id}" data-id="${id}"><i style="background:${sw}"></i>${name}</button>`).join("");
+  el.onclick = e => { const b = e.target.closest(".look"); if (!b) return; st.look = b.dataset.id; save(); render(); };
+}
+function days(x) {
+  const n = overdueDays(x);
+  if (x.s === "pending") return n < 0 ? `${dayWord(-n)} left` : `${dayWord(n)} overdue`;
+  if (x.s === "contested") return "—";
+  return `${dayWord(n)} ${x.done ? "late" : "overdue"}`;
+}
+function shortDays(x) { const n = overdueDays(x); return x.s === "contested" ? "—" : x.s === "pending" ? (n < 0 ? `${-n}d left` : `${n}d`) : `${n}d`; }
+function itemHTML(x) {
+  return `<article class="item">
+    <div class="when">${fmt(x.said)}</div>
+    <h2 class="claim">${esc(x.claim)}</h2>
+    <div class="right"><span class="pill s-${x.s}">${label[x.s]}</span><span class="overdue s-${x.s}">${days(x)}</span></div>
+    <div class="meta"><span class="cat">${esc(x.c)}</span><span class="src">${esc(x.where)} · due ${fmt(x.due)}${x.done ? " · arrived " + fmt(x.done) : ""} · <a href="${search(x.q)}" target="_blank" rel="noopener">find coverage</a></span></div>
+    ${x.note ? `<p class="note">${esc(x.note)}</p>` : ""}
+  </article>`;
+}
+function yearsAgo(x) { const y = (TODAY - d(x.said)) / (365.25 * DAY); return y < 1 ? "this year" : `${y.toFixed(1)} years ago`; }
+function sketchHTML(x) {
+  return `<article class="item">
+    <div class="when">${fmt(x.said)}</div>
+    <h2 class="claim">${esc(x.claim)}</h2>
+    <div class="right"><span class="pill s-${x.by}">${BY[x.by]}</span><span class="overdue">${yearsAgo(x)}</span></div>
+    <div class="meta"><span class="cat">${esc(x.c)}</span><span class="src">${esc(x.where)} · <a href="${search(x.q)}" target="_blank" rel="noopener">find coverage</a></span></div>
+    <p class="note why"><b>Why it's sketchy</b>${esc(x.why)}</p>
+  </article>`;
+}
+function render() {
+  const look = LOOKS.find(l => l[0] === st.look) || LOOKS[0];
+  document.body.className = st.look === "countdown" ? "" : "look-" + st.look;
+  const list = document.getElementById("list");
+  list.className = "l-" + look[2];
+  chips(document.getElementById("cats"), ["All", ...new Set(DATA.map(x => x.c))], "cat");
+  chips(document.getElementById("stats-f"), ["All", "missed", "late", "pending", "contested"], "status");
+  document.getElementById("sort").value = st.sort;
+  looks();
+  document.querySelectorAll(".tab").forEach(t => t.setAttribute("aria-selected", String(t.dataset.tab === st.tab)));
+  if (st.tab === "sketchy") return renderSketchy(look, list);
+  document.getElementById("flabel").textContent = "Status";
+  document.getElementById("lede").textContent = "Every dated promise we could pin down from Elon Musk, with the deadline he gave and what actually happened. The counter keeps running until the promise ships.";
+  document.getElementById("sort").querySelector('[value="overdue"]').hidden = false;
+  let rows = DATA.filter(x => (st.cat === "All" || x.c === st.cat) && (st.status === "All" || x.s === st.status));
+  const by = { overdue: (a, b) => overdueDays(b) - overdueDays(a), said: (a, b) => a.said.localeCompare(b.said),
+               saidnew: (a, b) => b.said.localeCompare(a.said), deadline: (a, b) => a.due.localeCompare(b.due) };
+  rows.sort(by[st.sort]);
+  if (!rows.length) { list.innerHTML = `<p class="empty">No promises match these filters.</p>`; }
+  else if (look[2] === "table") {
+    list.innerHTML = `<table><thead><tr><th>Said</th><th>Promise</th><th>Topic</th><th>Due</th><th>Status</th><th>Days over</th></tr></thead><tbody>${
+      rows.map(x => `<tr><td class="num">${fmt(x.said)}</td><td><div class="claim">${esc(x.claim)}</div><div class="src">${esc(x.where)} · <a href="${search(x.q)}" target="_blank" rel="noopener">find coverage</a></div></td><td class="cat">${esc(x.c)}</td><td class="num">${fmt(x.due)}</td><td><span class="pill s-${x.s}">${label[x.s]}</span></td><td class="num">${days(x)}</td></tr>`).join("")}</tbody></table>`;
+  } else if (look[2] === "receipt") {
+    const total = rows.filter(x => x.s !== "contested" && x.s !== "pending").reduce((t, x) => t + overdueDays(x), 0);
+    list.innerHTML = `<div class="rhead"><b>2 WEEKS · PROMISE CO.</b><br>RECEIPT #${TODAY.getFullYear()}-${rows.length}<br>${TODAY.toLocaleDateString("en-US")}</div>${
+      rows.map(x => `<div class="item"><p class="claim">${esc(x.claim)}</p><div class="right">${shortDays(x)}</div><p class="when">${fmt(x.said)} · ${esc(x.where)} · ${label[x.s].toUpperCase()}</p></div>`).join("")
+    }<div class="rtotal"><span>TOTAL DAYS OWED</span><span>${total.toLocaleString()}</span></div><p class="src" style="text-align:center;margin-top:14px">NO REFUNDS · DEPOSITS KEPT</p>`;
+  } else if (look[2] === "calendar") {
+    const years = [...new Set(rows.map(x => x.due.slice(0, 4)))].sort();
+    list.innerHTML = years.map(y => `<section class="year"><div class="yr">${y}</div><div class="cells">${rows.filter(x => x.due.startsWith(y)).map(itemHTML).join("")}</div></section>`).join("");
+  } else {
+    list.innerHTML = rows.map(itemHTML).join("");
+  }
+  // header stats (whole data set, not filtered)
+  const missed = DATA.filter(x => x.s === "missed").length, late = DATA.filter(x => x.s === "late").length;
+  const owed = DATA.filter(x => x.s === "missed" || x.s === "late").reduce((t, x) => t + overdueDays(x), 0);
+  document.getElementById("stats").innerHTML =
+    `<div class="stat"><b>${DATA.length}</b><span>Promises tracked</span></div>
+     <div class="stat"><b>${missed}</b><span>Still not delivered</span></div>
+     <div class="stat"><b>${late}</b><span>Arrived late</span></div>
+     <div class="stat big"><b>${(owed / 365.25).toFixed(1)}</b><span>Years overdue, combined</span></div>`;
+}
+function renderSketchy(look, list) {
+  document.getElementById("flabel").textContent = "Said by";
+  document.getElementById("lede").textContent = "Not broken deadlines, but claims that don't hold up well: from Musk and from Tesla's own channels. Each one says why.";
+  chips(document.getElementById("cats"), ["All", ...new Set(SKETCHY.map(x => x.c))], "cat");
+  const sf = document.getElementById("stats-f");
+  sf.innerHTML = ["All", "musk", "tesla"].map(v => `<button class="chip" aria-pressed="${st.src === v}" data-v="${v}">${v === "All" ? "All" : BY[v]}</button>`).join("");
+  sf.onclick = e => { const b = e.target.closest(".chip"); if (!b) return; st.src = b.dataset.v; save(); render(); };
+  const sortSel = document.getElementById("sort");
+  sortSel.querySelector('[value="overdue"]').hidden = true;
+  if (!["said", "saidnew"].includes(st.sort)) sortSel.value = "said";
+  let rows = SKETCHY.filter(x => (st.cat === "All" || x.c === st.cat) && (st.src === "All" || x.by === st.src));
+  rows.sort(st.sort === "saidnew" ? (a, b) => b.said.localeCompare(a.said) : (a, b) => a.said.localeCompare(b.said));
+  if (!rows.length) list.innerHTML = `<p class="empty">Nothing matches these filters.</p>`;
+  else if (look[2] === "table") {
+    list.innerHTML = `<table><thead><tr><th>Said</th><th>Claim</th><th>Why it's sketchy</th><th>By</th></tr></thead><tbody>${
+      rows.map(x => `<tr><td class="num">${fmt(x.said)}</td><td><div class="claim">${esc(x.claim)}</div><div class="src">${esc(x.where)} · <a href="${search(x.q)}" target="_blank" rel="noopener">find coverage</a></div></td><td>${esc(x.why)}</td><td><span class="pill s-${x.by}">${BY[x.by]}</span></td></tr>`).join("")}</tbody></table>`;
+  } else if (look[2] === "receipt") {
+    list.innerHTML = `<div class="rhead"><b>2 WEEKS · FINE PRINT</b><br>${TODAY.toLocaleDateString("en-US")}</div>${
+      rows.map(x => `<div class="item"><p class="claim">${esc(x.claim)}</p><div class="right">${x.by === "tesla" ? "TSLA" : "EM"}</div><p class="when">${fmt(x.said)} · ${esc(x.where)}</p><p class="why">${esc(x.why)}</p></div>`).join("")
+    }<div class="rtotal"><span>ITEMS</span><span>${rows.length}</span></div><p class="src" style="text-align:center;margin-top:14px">TERMS SUBJECT TO CHANGE</p>`;
+  } else if (look[2] === "calendar") {
+    const years = [...new Set(rows.map(x => x.said.slice(0, 4)))].sort();
+    list.innerHTML = years.map(y => `<section class="year"><div class="yr">${y}</div><div class="cells">${rows.filter(x => x.said.startsWith(y)).map(sketchHTML).join("")}</div></section>`).join("");
+  } else list.innerHTML = rows.map(sketchHTML).join("");
+  const tesla = SKETCHY.filter(x => x.by === "tesla").length;
+  document.getElementById("stats").innerHTML =
+    `<div class="stat"><b>${SKETCHY.length}</b><span>Sketchy claims</span></div>
+     <div class="stat"><b>${tesla}</b><span>From Tesla's own channels</span></div>
+     <div class="stat"><b>${SKETCHY.length - tesla}</b><span>From Musk</span></div>`;
+}
+document.querySelector(".tabs").onclick = e => { const t = e.target.closest(".tab"); if (!t) return; st.tab = t.dataset.tab; st.cat = "All"; save(); render(); };
+document.getElementById("sort").onchange = e => { st.sort = e.target.value; save(); render(); };
+document.getElementById("asof").textContent = "Counters as of " + TODAY.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" }) + ".";
+render();
+</script>
+
+</body></html>
