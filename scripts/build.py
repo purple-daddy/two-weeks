@@ -15,7 +15,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 DATE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
-STATUS = {"missed", "late", "pending", "contested"}
+STATUS = {"missed", "late", "kept", "pending", "contested"}
 BY = {"musk", "tesla"}
 
 
@@ -34,6 +34,8 @@ def load(name, required, extra=None):
                     datetime.date.fromisoformat(r[k])
                 except ValueError:
                     problems.append(f"{name}[{i}] '{k}' must be a real date, YYYY-MM-DD")
+        if r.get("src") is not None and not (isinstance(r["src"], str) and re.fullmatch(r"https://[^\s\"<>]{4,480}", r["src"])):
+            problems.append(f"{name}[{i}] 'src' must be an https link")
         if extra:
             problems += [f"{name}[{i}] {m}" for m in extra(r)]
     return rows, problems
@@ -43,10 +45,12 @@ def check_promise(r):
     out = []
     if r.get("s") not in STATUS:
         out.append("'s' must be one of " + "/".join(sorted(STATUS)))
-    if r.get("s") == "late" and not r.get("done"):
-        out.append("a 'late' promise needs a 'done' date")
-    if r.get("done") and r.get("due") and r["done"] < r["due"]:
-        out.append("'done' is before 'due'")
+    if r.get("s") in ("late", "kept") and not r.get("done"):
+        out.append("a 'late' or 'kept' promise needs a 'done' date")
+    if r.get("s") == "kept" and r.get("done") and r.get("due") and r["done"] > r["due"]:
+        out.append("a 'kept' promise must be done on or before its due date")
+    if r.get("s") == "late" and r.get("done") and r.get("due") and r["done"] <= r["due"]:
+        out.append("a 'late' promise must be done after its due date")
     if r.get("due") and r.get("said") and r["due"] < r["said"]:
         out.append("'due' is before 'said'")
     return out

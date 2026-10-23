@@ -295,5 +295,89 @@
   "s": "contested",
   "note": "The SEC called it misleading; Musk and Tesla settled for $20M each. A 2023 jury found him not liable to shareholders.",
   "q": "funding secured $420 SEC settlement 2023 jury verdict"
+ },
+ {
+  "c": "Robots",
+  "said": "2021-08-19",
+  "where": "Tesla AI Day 2021",
+  "claim": "Tesla will probably launch a Tesla Bot humanoid robot prototype in 2022.",
+  "due": "2022-12-31",
+  "done": "2022-09-30",
+  "s": "kept",
+  "note": "Only semi-functional prototypes were shown, at AI Day 2022.",
+  "q": "Tesla will probably launch a Tesla Bot humanoid robot prototype in 2022.",
+  "src": "https://www.timeslive.co.za/news/sci-tech/2021-08-20-musk-says-tesla-likely-to-launch-humanoid-robot-prototype-next-year/"
+ },
+ {
+  "c": "Other",
+  "said": "2021-08-19",
+  "where": "Tesla AI Day 2021",
+  "claim": "The Dojo training supercomputer will be operational in 2022.",
+  "due": "2022-12-31",
+  "done": "2023-07-19",
+  "s": "late",
+  "note": "Tesla said it started production of Dojo in its Q2 2023 report.",
+  "q": "The Dojo training supercomputer will be operational in 2022.",
+  "src": "https://electrek.co/2021/08/20/tesla-dojo-supercomputer-worlds-new-most-powerful-ai-training-machine/"
+ },
+ {
+  "c": "Robotaxi",
+  "said": "2025-10-22",
+  "where": "Q3 2025 earnings call",
+  "claim": "Tesla expects no safety drivers in large parts of Austin by the end of 2025.",
+  "due": "2025-12-31",
+  "done": "2026-01-22",
+  "s": "late",
+  "note": "Tesla began removing monitors on some rides in January 2026; mixed with supervised cars.",
+  "q": "Tesla expects no safety drivers in large parts of Austin by the end of 2025.",
+  "src": "https://driveteslacanada.ca/news/tesla-aims-to-remove-robotaxi-safety-operators-in-austin-expand-to-more-states-by-year-end/"
+ },
+ {
+  "c": "Robotaxi",
+  "said": "2025-10-22",
+  "where": "Q3 2025 earnings call",
+  "claim": "Tesla expects to operate Robotaxi in 8-10 metro areas by the end of 2025.",
+  "due": "2025-12-31",
+  "done": null,
+  "s": "missed",
+  "note": "As of April 18, 2026 unsupervised service was in three cities.",
+  "q": "Tesla expects to operate Robotaxi in 8-10 metro areas by the end of 2025.",
+  "src": "https://driveteslacanada.ca/news/tesla-aims-to-remove-robotaxi-safety-operators-in-austin-expand-to-more-states-by-year-end/"
+ },
+ {
+  "c": "Vehicles",
+  "said": "2025-10-22",
+  "where": "Q3 2025 earnings call",
+  "claim": "Cybercab production will begin in the second quarter of 2026.",
+  "due": "2026-06-30",
+  "done": "2026-04-24",
+  "s": "kept",
+  "note": "Musk said early output would be very slow.",
+  "q": "Cybercab production will begin in the second quarter of 2026.",
+  "src": "https://driveteslacanada.ca/news/tesla-cybercab-production-starts-in-q2-2026-says-elon-musk/"
+ },
+ {
+  "c": "Vehicles",
+  "said": "2025-01-29",
+  "where": "Q4 2024 shareholder update",
+  "claim": "Tesla said more affordable models were on track to start production in the first half of 2025.",
+  "due": "2025-06-30",
+  "done": "2025-10-07",
+  "s": "late",
+  "note": "The cheaper Model Y and Model 3 Standard were unveiled in October 2025.",
+  "q": "Tesla said more affordable models were on track to start production in the first",
+  "src": "https://shacknews.com/article/142901/tesla-tsla-q4-2024-earnings-call-transcript?amphtml=1"
+ },
+ {
+  "c": "Space",
+  "said": "2024-09-07",
+  "where": "Post on X",
+  "claim": "Musk said the first Starships to Mars would launch when the next Earth-Mars window opens in two years.",
+  "due": "2026-12-31",
+  "done": null,
+  "s": "pending",
+  "note": "Musk said in Feb 2026 SpaceX had shifted focus to the Moon; no Mars launch scheduled as of Sept 2026.",
+  "q": "Musk said the first Starships to Mars would launch when the next Earth-Mars wind",
+  "src": "https://spacenexus.us/promises/starship-mars"
  }
 ]
