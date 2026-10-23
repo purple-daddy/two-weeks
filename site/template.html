@@ -81,7 +81,7 @@ select { font: inherit; font-size: 14px; padding: 5px 8px; background: var(--sur
 
 /* status pills */
 .pill { font-family: var(--mono); font-size: 11px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; padding: 2px 8px; border-radius: 999px; border: 1px solid currentColor; white-space: nowrap }
-.s-missed { color: var(--accent) } .s-late { color: var(--warn) } .s-pending { color: var(--pend) } .s-contested { color: var(--muted) }
+.s-kept { color: var(--ok) } .s-missed { color: var(--accent) } .s-late { color: var(--warn) } .s-pending { color: var(--pend) } .s-contested { color: var(--muted) }
 .overdue { font-family: var(--mono); font-variant-numeric: tabular-nums; font-weight: 600 }
 .cat { font-family: var(--mono); font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .08em }
 .src { font-family: var(--mono); font-size: 12px; color: var(--muted) }
@@ -221,7 +221,7 @@ function overdueDays(x) {
 }
 const dayWord = n => n === 1 ? "1 day" : n.toLocaleString() + " days";
 const sortOk = ["overdue", "said", "saidnew", "deadline"];
-const label = { missed: "Missed", late: "Late", pending: "Pending", contested: "Contested" };
+const label = { missed: "Missed", late: "Late", kept: "Kept", pending: "Pending", contested: "Contested" };
 const LOOKS = [
   ["countdown","Countdown","timeline","#d1281f"], ["showroom","Showroom","cards","#111111"], ["mars","Mars","cards","#ff6a2b"],
   ["transcript","Transcript","timeline","#9b2c2c"], ["receipt","Receipt","receipt","#fffdf8"], ["tabloid","Tabloid","cards","#fff200"],
@@ -252,15 +252,17 @@ function days(x) {
   const n = overdueDays(x);
   if (x.s === "pending") return n < 0 ? `${dayWord(-n)} left` : `${dayWord(n)} overdue`;
   if (x.s === "contested") return "—";
+  if (x.s === "kept") return "kept on time";
   return `${dayWord(n)} ${x.done ? "late" : "overdue"}`;
 }
-function shortDays(x) { const n = overdueDays(x); return x.s === "contested" ? "—" : x.s === "pending" ? (n < 0 ? `${-n}d left` : `${n}d`) : `${n}d`; }
+function shortDays(x) { const n = overdueDays(x); return x.s === "contested" ? "—" : x.s === "kept" ? "kept" : x.s === "pending" ? (n < 0 ? `${-n}d left` : `${n}d`) : `${n}d`; }
+function srcLink(x) { return typeof x.src === "string" && /^https:\/\/[^\s"<>]+$/.test(x.src) ? ` · <a href="${esc(x.src)}" target="_blank" rel="noopener noreferrer">source</a>` : ""; }
 function itemHTML(x) {
   return `<article class="item">
     <div class="when">${fmt(x.said)}</div>
     <h2 class="claim">${esc(x.claim)}</h2>
     <div class="right"><span class="pill s-${x.s}">${label[x.s]}</span><span class="overdue s-${x.s}">${days(x)}</span></div>
-    <div class="meta"><span class="cat">${esc(x.c)}</span><span class="src">${esc(x.where)} · due ${fmt(x.due)}${x.done ? " · arrived " + fmt(x.done) : ""} · <a href="${search(x.q)}" target="_blank" rel="noopener">find coverage</a></span></div>
+    <div class="meta"><span class="cat">${esc(x.c)}</span><span class="src">${esc(x.where)} · due ${fmt(x.due)}${x.done ? " · arrived " + fmt(x.done) : ""} · <a href="${search(x.q)}" target="_blank" rel="noopener">find coverage</a>${srcLink(x)}</span></div>
     ${x.note ? `<p class="note">${esc(x.note)}</p>` : ""}
   </article>`;
 }
@@ -280,7 +282,7 @@ function render() {
   const list = document.getElementById("list");
   list.className = "l-" + look[2];
   chips(document.getElementById("cats"), ["All", ...new Set(DATA.map(x => x.c))], "cat");
-  chips(document.getElementById("stats-f"), ["All", "missed", "late", "pending", "contested"], "status");
+  chips(document.getElementById("stats-f"), ["All", "missed", "late", "kept", "pending", "contested"], "status");
   document.getElementById("sort").value = st.sort;
   looks();
   document.querySelectorAll(".tab").forEach(t => t.setAttribute("aria-selected", String(t.dataset.tab === st.tab)));
