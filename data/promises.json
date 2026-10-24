@@ -379,5 +379,41 @@
   "note": "Musk said in Feb 2026 SpaceX had shifted focus to the Moon; no Mars launch scheduled as of Sept 2026.",
   "q": "Musk said the first Starships to Mars would launch when the next Earth-Mars wind",
   "src": "https://spacenexus.us/promises/starship-mars"
+ },
+ {
+  "c": "Robotaxi",
+  "said": "2026-10-21",
+  "where": "Q3 2026 earnings call",
+  "claim": "Tesla expects to let customer-owned vehicles with unsupervised FSD join the Robotaxi network around Q2 2027.",
+  "due": "2027-06-30",
+  "done": null,
+  "s": "pending",
+  "note": "Initially limited to select U.S. regions, per the recap.",
+  "q": "Tesla expects to let customer-owned vehicles with unsupervised FSD join the Robo",
+  "src": "https://www.notateslaapp.com/news/4867/tesla-q3-2026-earnings-call-recap-everything-you-need-to-know"
+ },
+ {
+  "c": "Robotaxi",
+  "said": "2026-10-21",
+  "where": "Q3 2026 earnings call",
+  "claim": "Cybercab rides will launch in Dallas in November 2026.",
+  "due": "2026-11-30",
+  "done": null,
+  "s": "pending",
+  "note": "",
+  "q": "Cybercab rides will launch in Dallas in November 2026.",
+  "src": "https://www.notateslaapp.com/news/4867/tesla-q3-2026-earnings-call-recap-everything-you-need-to-know"
+ },
+ {
+  "c": "Self-driving",
+  "said": "2026-10-21",
+  "where": "Q3 2026 earnings call",
+  "claim": "Musk would be surprised if EU-wide FSD approval takes longer than Q1 2027.",
+  "due": "2027-03-31",
+  "done": null,
+  "s": "pending",
+  "note": "A vote on bloc-wide approval is expected in December 2026.",
+  "q": "Musk would be surprised if EU-wide FSD approval takes longer than Q1 2027.",
+  "src": "https://www.notateslaapp.com/news/4867/tesla-q3-2026-earnings-call-recap-everything-you-need-to-know"
  }
 ]
