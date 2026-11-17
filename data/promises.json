@@ -415,5 +415,29 @@
   "note": "A vote on bloc-wide approval is expected in December 2026.",
   "q": "Musk would be surprised if EU-wide FSD approval takes longer than Q1 2027.",
   "src": "https://www.notateslaapp.com/news/4867/tesla-q3-2026-earnings-call-recap-everything-you-need-to-know"
+ },
+ {
+  "c": "Vehicles",
+  "said": "2026-10-21",
+  "where": "Q3 2026 earnings call",
+  "claim": "Tesla VP Lars Moravy said Tesla is trying to get Cybercabs to customers by the end of 2026, starting small.",
+  "due": "2026-12-31",
+  "done": null,
+  "s": "pending",
+  "note": "Stated as an effort, not a firm commitment.",
+  "q": "Tesla VP Lars Moravy said Tesla is trying to get Cybercabs to customers by the e",
+  "src": "https://www.notateslaapp.com/news/4864/tesla-targets-5m-cars-a-year-by-2030-cybercab-sales-soon"
+ },
+ {
+  "c": "Vehicles",
+  "said": "2026-11-11",
+  "where": "Post on X",
+  "claim": "Musk said Cybertruck production in Texas will be extended through the end of summer 2027 to work through the order backlog.",
+  "due": "2027-09-22",
+  "done": null,
+  "s": "pending",
+  "note": "This extends the schedule he gave on 2026-11-06, which was to wind down Cybertruck production around mid-2027.",
+  "q": "Musk said Cybertruck production in Texas will be extended through the end of sum",
+  "src": "https://teslarati.com/tesla-extends-cybertruck-production-slightly-handle-order-log"
  }
 ]
